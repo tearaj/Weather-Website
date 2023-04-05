@@ -27,7 +27,7 @@ function display(city, weather){
 	console.log("Called")
 	const weatherEl = document.querySelector(".weather-details")
 	console.log(weather)
-	wind_speed.innerHTML=`${weather.wind_speed} km/h`
+	wind_speed.innerHTML=`${weather.wind_speed}km/h`
 	wind_degrees.innerHTML=`${weather.wind_degrees}°`
 	temp.innerHTML=`${weather.temp}°C`
 	humidity.innerHTML=`${weather.humidity}%`

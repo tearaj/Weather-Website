@@ -1,8 +1,9 @@
 //this file will have functions to call the api
+import { API_KEY } from "./apiKey.js";
 const options = {
 	method: 'GET',
 	headers: {
-		'X-RapidAPI-Key': '2c58d12bbbmsh11650f1d3a8aa42p179241jsn79fa83420ad7',
+		'X-RapidAPI-Key': API_KEY,
 		'X-RapidAPI-Host': 'weather-by-api-ninjas.p.rapidapi.com'
 	}
 };
