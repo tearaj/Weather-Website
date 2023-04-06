@@ -19,26 +19,34 @@ async function search(event){
 		console.log(searchButton.innerHTML)
 		const weather = await getWeatherByCity(city)
 		searchButton.innerHTML="Search"
+		// logger(city, weather)
 		display(city, weather)
 }
 
 
 function display(city, weather){
-	console.log("Called")
-	const weatherEl = document.querySelector(".weather-details")
-	console.log(weather)
-	wind_speed.innerHTML=`${weather.wind_speed}km/h`
-	wind_degrees.innerHTML=`${weather.wind_degrees}°`
-	temp.innerHTML=`${weather.temp}°C`
-	humidity.innerHTML=`${weather.humidity}%`
-	min_temp.innerHTML=`${weather.min_temp}°C`
-	max_temp.innerHTML=`${weather.max_temp}°C`
-	feels_like.innerHTML=`${weather.feels_like}°C`
-	cloud_pct.innerHTML=weather.cloud_pct
+	const elementsToUpdate = document.querySelectorAll('.update-details')
+	elementsToUpdate.forEach((element)=>{
+		element.innerHTML = weather[element.id]
+	})
+	
 	const cityEl = document.querySelector('#primary-location')
 	cityEl.innerHTML = city.charAt(0).toUpperCase()+city.slice(1);	
 }
 
+function logger(city, weather){
+	const elementsToUpdate = document.querySelectorAll('.update-details')
+	console.log("ELEMENTS ARE: \n",elementsToUpdate)
+	const elementsArr=Array.from(elementsToUpdate)
+	console.log("ARRAY IS: ", elementsArr)
+	elementsArr.forEach((el)=>{
+		const elData = weather[el.id]
+		console.log(el.id)
+		console.log(el.innerHTML)
+		console.log("New element data ", elData)
+		el.innerHTML = weather[el.id]
+	})
+}
 //add click event listener to buttons
 searchButton.addEventListener("click",search)
 
