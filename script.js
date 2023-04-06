@@ -2,15 +2,25 @@ import getWeatherByCity from "./apiCalls.js";
 
 const searchButton = document.querySelector("#search-btn")
 const searchBar=document.getElementById("search-bar")
+const toastContent=document.querySelector('.toast')
+const toast=new bootstrap.Toast(toastContent)
 
 async function search(event){
 		event.preventDefault()
 		const city = searchBar.value
 		searchButton.innerHTML=`<span class="spinner-border spinner-border-sm" style="margin:0 17.3px" role="status" aria-hidden="true"></span>`
-		console.log(searchButton.innerHTML)
-		const weather = await getWeatherByCity(city)
+		const response = await getWeatherByCity(city)
 		searchButton.innerHTML="Search"
-		display(city, weather)
+		if(response.status>400){
+			error("Invalid city name.<br/>Please enter a valid city name.")
+			return
+		}
+		else if(response.status>500){
+			error("API is unreachable at the moment.<br/>Please try again later.")
+			return
+		}
+
+		display(city, response.data)
 }
 
 
@@ -24,6 +34,14 @@ function display(city, weather){
 	cityEl.innerHTML = city.charAt(0).toUpperCase()+city.slice(1);	
 }
 
+function error(message){
+	const closeBtn  = document.querySelector('.close-custom')
+	const toastBody = document.querySelector('.toast-body')
+	toast.show()
+	toastBody.innerHTML = message
+	closeBtn.addEventListener('click',()=>toast.hide())
+	setTimeout(()=>toast.hide(),5000)
+}
 
 //add click event listener to buttons
 searchButton.addEventListener("click",search)
@@ -33,4 +51,6 @@ searchBar.addEventListener("keypress",(event)=>{
 	if(event.key=="Enter") {event.preventDefault; searchButton.click()}
 })
 
-display("Chennai", await getWeatherByCity("Chennai"))
+const initialResponse = await getWeatherByCity("Chennai")
+if(initialResponse.status==200) display("Chennai", initialResponse.data)
+else error("API is unreachable at the moment.<br/>Please try again later.")
