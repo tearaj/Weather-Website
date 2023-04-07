@@ -11,11 +11,11 @@ async function search(event){
 		searchButton.innerHTML=`<span class="spinner-border spinner-border-sm" style="margin:0 17.3px" role="status" aria-hidden="true"></span>`
 		const response = await getWeatherByCity(city)
 		searchButton.innerHTML="Search"
-		if(response.status>400){
+		if(response.status>=400 && response.status<500){
 			error("Invalid city name.<br/>Please enter a valid city name.")
 			return
 		}
-		else if(response.status>500){
+		else if(response.status>=500){
 			error("API is unreachable at the moment.<br/>Please try again later.")
 			return
 		}
